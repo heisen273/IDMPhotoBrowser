@@ -648,9 +648,9 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         [_doneButton setImage:_doneButtonImage forState:UIControlStateNormal];
         _doneButton.contentMode = UIViewContentModeScaleAspectFit;
     }
-    UIImage *likeButtonImage = (_likeImage) ? _likeImage : [UIImage imageNamed:@"IDMPhotoBrowser.bundle/images/IDMPhotoBrowser_heart_like.png"];
+    UIImage *likeButtonImage = (_likeImage) ? _likeImage : [UIImage imageNamed:@""];
      
-    UIImage *likedButtonImage = (_likedImage) ? _likedImage : [UIImage imageNamed:@"IDMPhotoBrowser.bundle/images/IDMPhotoBrowser_heart_liked.png"];
+    UIImage *likedButtonImage = (_likedImage) ? _likedImage : [UIImage imageNamed:@""];
      
      // Like Button
      _likeButton = [[UIBarButtonItem alloc] initWithCustomView:[self customToolbarButtonImage:likeButtonImage
