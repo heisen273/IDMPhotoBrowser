@@ -61,4 +61,10 @@
 // Return nil if there is no placeholder
 - (UIImage *)placeholderImage;
 
-@end
+// Set a boolean indicating if the image has been liked/favorited/bookmarked
+ - (void)setLiked:(BOOL)liked;
+
+ // Return a boolean indicator if the image is liked/favorited/bookmarked
+ - (BOOL)isLiked;
+
+ @end
