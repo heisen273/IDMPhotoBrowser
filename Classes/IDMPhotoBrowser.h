@@ -21,6 +21,7 @@
 - (void)willAppearPhotoBrowser:(IDMPhotoBrowser *)photoBrowser;
 - (void)willDisappearPhotoBrowser:(IDMPhotoBrowser *)photoBrowser;
 - (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didShowPhotoAtIndex:(NSUInteger)index;
+- (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didLikePhotoAtIndex:(NSUInteger)index;
 - (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didDismissAtPageIndex:(NSUInteger)index;
 - (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser willDismissAtPageIndex:(NSUInteger)index;
 - (void)photoBrowser:(IDMPhotoBrowser *)photoBrowser didDismissActionSheetWithButtonIndex:(NSUInteger)buttonIndex photoIndex:(NSUInteger)photoIndex;
@@ -40,12 +41,14 @@
 @property (nonatomic) BOOL displayArrowButton;
 @property (nonatomic) BOOL displayActionButton;
 @property (nonatomic, strong) NSArray *actionButtonTitles;
+@property (nonatomic, weak) UIImage *likeImage, *likedImage;
 @property (nonatomic, weak) UIImage *leftArrowImage, *leftArrowSelectedImage;
 @property (nonatomic, weak) UIImage *rightArrowImage, *rightArrowSelectedImage;
 @property (nonatomic, weak) UIImage *actionButtonImage, *actionButtonSelectedImage;
 
 // View customization
 @property (nonatomic) BOOL displayDoneButton;
+@property (nonatomic) BOOL displayLikeButton;
 @property (nonatomic) BOOL useWhiteBackgroundColor;
 @property (nonatomic, weak) UIImage *doneButtonImage;
 @property (nonatomic, weak) UIColor *trackTintColor, *progressTintColor;
