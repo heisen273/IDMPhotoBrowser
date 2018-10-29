@@ -39,7 +39,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
 	// Toolbar
 	UIToolbar *_toolbar;
-	UIBarButtonItem *_previousButton, *_nextButton, *_actionButton;
+	UIBarButtonItem *_likeButton, *_previousButton, *_nextButton, *_actionButton;
     UIBarButtonItem *_counterButton;
     UILabel *_counterLabel;
 
@@ -168,7 +168,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
         _displayDoneButton = YES;
         _doneButtonImage = nil;
-
+	_displayLikeButton = YES;
         _displayToolbar = YES;
         _displayActionButton = YES;
         _displayArrowButton = YES;
@@ -182,7 +182,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 
         _useWhiteBackgroundColor = NO;
         _leftArrowImage = _rightArrowImage = _leftArrowSelectedImage = _rightArrowSelectedImage = nil;
-
+        _likeImage = _likedImage = nil;
         _arrowButtonsChangePhotosAnimated = YES;
 
         _backgroundScaleFactor = 1.0;
@@ -559,6 +559,8 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:image forState:UIControlStateNormal];
     [button setImage:selectedImage forState:UIControlStateDisabled];
+    [button setImage:selectedImage forState:UIControlStateHighlighted];
+    [button setImage:selectedImage forState:UIControlStateSelected];
     [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [button setContentMode:UIViewContentModeCenter];
     [button setFrame:[self getToolbarButtonFrame:image]];
@@ -646,6 +648,15 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
         [_doneButton setImage:_doneButtonImage forState:UIControlStateNormal];
         _doneButton.contentMode = UIViewContentModeScaleAspectFit;
     }
+    UIImage *likeButtonImage = (_likeImage) ? _likeImage : [UIImage imageNamed:@"IDMPhotoBrowser.bundle/images/IDMPhotoBrowser_heart_like.png"];
+     
+    UIImage *likedButtonImage = (_likedImage) ? _likedImage : [UIImage imageNamed:@"IDMPhotoBrowser.bundle/images/IDMPhotoBrowser_heart_liked.png"];
+     
+     // Like Button
+     _likeButton = [[UIBarButtonItem alloc] initWithCustomView:[self customToolbarButtonImage:likeButtonImage
+                                                                                imageSelected:likedButtonImage
+                                                                                       action:@selector(likeButtonPressed:)]];
+     
 
     UIImage *leftButtonImage = (_leftArrowImage == nil) ?
     [UIImage imageNamed:@"IDMPhotoBrowser.bundle/images/IDMPhotoBrowser_arrowLeft.png"]          : _leftArrowImage;
@@ -850,7 +861,13 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                target:self action:nil];
     NSMutableArray *items = [NSMutableArray new];
-
+	
+    if (_displayLikeButton) {
+         [items addObject:_likeButton];
+     } else if(_displayActionButton) {
+         [items addObject:fixedLeftSpace];
+     }  
+	
     if (_displayActionButton)
         [items addObject:fixedLeftSpace];
     [items addObject:flexSpace];
@@ -1215,6 +1232,12 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 #pragma mark - Toolbar
 
 - (void)updateToolbar {
+	
+     id <IDMPhoto> currentPhoto = [self photoAtIndex:_currentPageIndex];
+     
+     // Like Status
+     [(UIButton *)_likeButton.customView setSelected:currentPhoto.isLiked];
+     	
     // Counter
 	if ([self numberOfPhotos] > 1) {
 		_counterLabel.text = [NSString stringWithFormat:@"%lu %@ %lu", (unsigned long)(_currentPageIndex+1), IDMPhotoBrowserLocalizedStrings(@"of"), (unsigned long)[self numberOfPhotos]];
@@ -1226,6 +1249,16 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 	_previousButton.enabled = (_currentPageIndex > 0);
 	_nextButton.enabled = (_currentPageIndex < [self numberOfPhotos]-1);
 }
+ - (void)likeButtonPressed:(id)sender {
+     id <IDMPhoto> currentPhoto = [self photoAtIndex:_currentPageIndex];
+     
+     [currentPhoto setLiked:!currentPhoto.isLiked];
+     [self updateToolbar];
+     
+     if ([_delegate respondsToSelector:@selector(photoBrowser:didLikePhotoAtIndex:)]) {
+         [_delegate photoBrowser:self didLikePhotoAtIndex:_currentPageIndex];
+     }
+ }
 
 - (void)jumpToPageAtIndex:(NSUInteger)index {
     // Change page
