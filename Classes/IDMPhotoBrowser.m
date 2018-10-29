@@ -867,9 +867,6 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
      } else if(_displayActionButton) {
          [items addObject:fixedLeftSpace];
      }  
-	
-    if (_displayActionButton)
-        [items addObject:fixedLeftSpace];
     [items addObject:flexSpace];
 
     if (numberOfPhotos > 1 && _displayArrowButton)
