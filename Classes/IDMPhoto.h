@@ -24,6 +24,7 @@ typedef void (^IDMProgressUpdateBlock)(CGFloat progress);
 @property (nonatomic, strong) NSURL *photoURL;
 @property (nonatomic, strong) IDMProgressUpdateBlock progressUpdateBlock;
 @property (nonatomic, strong) UIImage *placeholderImage;
+@property (nonatomic, getter = isLiked) BOOL liked;
 
 // Class
 + (IDMPhoto *)photoWithImage:(UIImage *)image;
