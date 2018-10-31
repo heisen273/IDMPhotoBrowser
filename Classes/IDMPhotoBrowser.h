@@ -41,7 +41,7 @@
 @property (nonatomic) BOOL displayArrowButton;
 @property (nonatomic) BOOL displayActionButton;
 @property (nonatomic, strong) NSArray *actionButtonTitles;
-@property (nonatomic, weak) UIImage *likeImage, *likedImage;
+@property (nonatomic, strong) UIImage *likeImage, *likedImage;
 @property (nonatomic, weak) UIImage *leftArrowImage, *leftArrowSelectedImage;
 @property (nonatomic, weak) UIImage *rightArrowImage, *rightArrowSelectedImage;
 @property (nonatomic, weak) UIImage *actionButtonImage, *actionButtonSelectedImage;
